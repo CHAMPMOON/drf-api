@@ -6,7 +6,8 @@ class ArticleSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
     title = serializers.CharField(max_length=50)
     body = serializers.CharField()
-    created = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S")
+    created = serializers.DateTimeField(
+        required=False, format="%Y-%m-%d %H:%M:%S", )
 
     def create(self, validated_data):
         return Article.objects.create(**validated_data)
