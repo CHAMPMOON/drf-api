@@ -11,6 +11,17 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
+from decouple import config
+from django.core.exceptions import ImproperlyConfigured
+
+
+def get_env_value(env_variable: str) -> str:
+    try:
+        return config(env_variable)
+    except KeyError:
+        error_msg = 'Set the {} environment variable'.format(env_variable)
+        raise ImproperlyConfigured(error_msg)
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -75,8 +86,12 @@ WSGI_APPLICATION = 'socialnetwork.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': get_env_value('DATABASE_NAME'),
+        'USER': get_env_value('DATABASE_USER'),
+        'PASSWORD': get_env_value('DATABASE_PASSWORD'),
+        'HOST': get_env_value('DATABASE_HOST'),
+        'PORT': get_env_value('DATABASE_PORT'),
     }
 }
 
