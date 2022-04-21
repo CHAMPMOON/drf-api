@@ -15,8 +15,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from socialnetwork import views
 
 urlpatterns = [
+    path('', views.get_routes),
     path('admin/', admin.site.urls),
     path('', include('article.urls')),
+    path('', include('comment.urls')),
 ]
